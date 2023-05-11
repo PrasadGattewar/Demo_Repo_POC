@@ -1,0 +1,38 @@
+name: DotNetFramework
+
+on:
+  push:
+    branches: master
+
+jobs:
+  build:
+   runs-on: self-hosted
+   
+   steps:
+   - uses: actions/checkout@v2
+   
+   - name: Setup MSBuild
+     uses: microsoft/setup-msbuild@v1
+     
+   - name: Setup NuGet
+     uses: NuGet/setup-nuget@v1.0.2
+     
+   - name: Navigate to Workspace
+     run: cd $GITHUB_WORKSPACE
+     
+   - name: Create Build Directory
+     run: mkdir _build
+     
+   - name: Restore Packages
+     run: nuget restore NetFrameworkProject.sln
+     
+   - name: Build Solution
+     run: |
+        msbuild.exe NetFrameworkProject.sln /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
+   
+   - name: Publish Artifacts to Azure
+     uses: Azure/webapps-deploy@v2
+     with:
+        app-name: DotNetFramework
+        package: "./_build"
+      
