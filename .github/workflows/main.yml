@@ -25,7 +25,7 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
       - name: Restore Packages
-        run: nuget restore NetFrameworkProject.sln
+        run: nuget restore NetFrameworkProject/NetFrameworkProject.sln
 
       - name: Build Solution
         run: |
