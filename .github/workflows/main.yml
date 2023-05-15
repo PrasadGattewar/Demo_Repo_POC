@@ -2,7 +2,7 @@ name: DotNetFramework
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main"]
 
 jobs:
   build:
